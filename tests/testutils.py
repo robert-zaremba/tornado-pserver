@@ -4,7 +4,7 @@ from functional import curry
 
 @curry
 def debug_print(prefix, data, callback=None):
-    print(str(prefix) + str(data))
+    print(str(prefix) + str(data)+'#')
     if callback: callback(data)
 
 @curry
@@ -43,7 +43,13 @@ class NumDict(dict):
 
 
 def fake_function(*args, **kwargs):
+    """fake function which acceept any argument and returns None"""
     pass
+
+def fake_functionR(to_return, *args, **kwargs):
+    """Function which takes at least 1 argument and return it.
+    Can be used with functools.partial"""
+    return to_return
 
 
 class FakeCls(object):
@@ -62,23 +68,29 @@ class SpyCls(object):
       it allows to access any field / method
       it counts number of getting / calling   fields / methods
       """
-    def __new__(cls, *args):
-        obj = super(SpyCls, cls).__new__(cls, *args)
-        obj.num_method_calls = NumDict()
-        return obj
+
+    def __init__(self, ret_val=fake_function):
+        self.num_method_calls = NumDict()
+        self.ret_val = ret_val
 
     def __getattr__(self, name):
         """this is runned if self.name fails"""
         self.num_method_calls[name] += 1
-        return fake_function
+        return self.ret_val
 
 class SpyMethod(SpyCls):
+    """like SpyCls but also, object of this class acts as method, which acceppt any arguments and
+    returns None.
+    It counts calls of the method, so after test we can check if
+    the method (object) was called and how many times"""
     def __init__(self):
         self.num_calls = 0
     def __call__(self, *args, **kwargs):
         self.num_calls += 1
 
 class SpyCallbackMethod(SpyMethod):
+    """Like SpyMethod, but expects callable as a first argument
+    and call it with rest of arguments"""
     def __call__(self, f, *args, **kwargs):
         super(SpyCallbackMethod, self).__call__(f, *args, **kwargs)
         return f(*args, **kwargs)
