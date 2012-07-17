@@ -14,7 +14,13 @@
 # under the License.
 
 try:
-    from logger import logger
+    import logger
+    try:
+        import config
+        colored = getattr(config, 'log_colored', False)
+    except ImportError:
+        colored = False
+    logger = logger.make_logger('pserver', debug=False, colored=colored)
 except ImportError:
     import logging as logger
 
