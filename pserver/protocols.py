@@ -86,7 +86,7 @@ class NewLinerReq(PRequest):
            <data>\n
     """
     def __init__(self, *args, **kwargs):
-        super(NetStringReq, self).__init__(*args, **kwargs)
+        super(NewLinerReq, self).__init__(*args, **kwargs)
         self._response_data =[]
 
 
