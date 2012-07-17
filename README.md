@@ -1,19 +1,17 @@
 tornado-pserver
 ===============
 
-Asynchronous, super fast, protocol aware server based on tornado.netutil.TCPServer. It's very easy to extend and supply own protocol
+Asynchronous, super fast, protocol aware server based on `tornado.netutil.TCPServer`. It's very easy to extend and supply own protocol
 
-== Example
-
+## Example
 For low level echo server example check [example file](https://github.com/robert-zaremba/tornado-pserver/blob/master/pserver/example.py)
 
 Other example of server to make communication between two services by NetString protocol.
 
-Client asks server for some data from database.
+* Client asks server for some data from database.
+* Server receives request about some data from Redis database, and respond by sending the result with additional info (empty `dict`).
 
-Server receives request about some data from Redis database, and respond by sending the result with additional info (empty `dict`).
-
-=== Server
+### Server
 
 ```python
 import logging
@@ -27,7 +25,7 @@ from pserver import PServer, NetStringConn
 
 class Handler(object):
     def __init__(self):
-    	self.redis = StrictRedis()
+        self.redis = StrictRedis()
         self.num_h   = 0   # num of handled request
         self.tstamp  = time.time()
 
@@ -61,7 +59,24 @@ if __name__ == '__main__':
     IOLoop.instance().start()
 ```
 
-== Usage
+## Usage
 
 To use _pserver_ for your protocol, you should extend `base.PConnection` class and `base.PRequest` class.
+
+
+## Installation
+
+```
+python setup.py install
+```
+
+### Requirements
+
+* Python2 >= 2.7 or Python3 >= 3.1 or PyPy >= 1.8
+* tornado >= 2.1.1
+
+Additional requirements to run tests:
+
+* py.test (preferred) or nose
+* [pyfunctional](https://github.com/robert-zaremba/pyfunctional)
 
