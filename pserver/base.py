@@ -27,7 +27,7 @@ from tornado.iostream import  SSLIOStream
 from tornado.netutil import TCPServer
 from tornado import stack_context
 
-from pserver import logger
+from . import logger
 
 
 class PServer(TCPServer):
@@ -262,4 +262,4 @@ class PRequest(object):
             return None
 
     def __repr__(self):
-        return " {} from {},  body:{}".foramt(self.__class__.__name__, self.protocol, self.remote_ip, self.body)
+        return " {} from {},  body:{}".format(self.__class__.__name__, self.protocol, self.remote_ip, self.body)

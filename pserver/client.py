@@ -1,6 +1,6 @@
 """Basic clients implementation for PServer and its connections"""
 
-from pserver import logger
+from . import logger
 
 
 class NetStringClient(object):

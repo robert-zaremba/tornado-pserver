@@ -11,9 +11,14 @@ def pytest_cmdline_preparse(args):
         num = max(multiprocessing.cpu_count() / 2, 1)
         args[:] = ["-n", str(num)] + args
 
+
 # --runslow command line option to control skipping of slow marked tests (decorated by @pytest.mark.slow)
 # item is an function - test object
 # more info at http://pytest.org/latest/funcargs.html
+def pytest_addoption(parser):
+    parser.addoption("--runslow", action="store_true",
+        help="run slow tests")
+
 def pytest_runtest_setup(item):
     if 'slow' in item.keywords and not item.config.getvalue("runslow"):
         pytest.skip("need --runslow option to run")
@@ -32,4 +37,5 @@ def pytest_unconfigure(config):
 #   -rx == -report-on-xfail   print messages for xfails
 #   --runxfail    force the running and reporting of an xfail marked test as if it weren't marked at all.
 #   -rxs  # show extra info on skips and xfails
+#   --runslow   - run slow tests
 #   selecting tests:  http://pytest.org/latest/example/markers.html#using-k-text-to-select-tests

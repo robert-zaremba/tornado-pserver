@@ -1,9 +1,8 @@
 import time
 from tornado.util import b, bytes_type
 
-from pserver import logger
-from pserver.base import PConnection, PRequest
-
+from . import logger
+from .base import PConnection, PRequest
 
 
 class NetStringReq(PRequest):
@@ -29,7 +28,7 @@ class NetStringReq(PRequest):
         data = ''.join(self._response_data)
         self.connection.write(str(len(data)-1) + ':')
         self.connection.write(data, callback=callback)
-        self._response_data = []
+        self._response_data = None
 
         self.finish()
 
