@@ -7,10 +7,10 @@ Asynchronous, super fast, protocol aware server based on `tornado.netutil.TCPSer
 For low level echo server based on build in _NewLiner_ protocol check [example file](https://github.com/robert-zaremba/tornado-pserver/blob/master/pserver/example.py).
 To start server, write:
 
-'''python
+```python
 from pserver.example import echo_server
 echo_server(12345)
-'''
+```
 
 Below I present an implementation of communication between two services using NetString protocol.
 
