@@ -80,7 +80,7 @@ class PServer(TCPServer):
         return [s.getsockname() for s in self._sockets.values()]
 
     def handle_stream(self, stream, address):
-        logger.info("handling new stream - a client connection")
+        logger.info("handling new stream - a connection with %s", address)
         self.protocol_conn(stream, address, self.request_callback,
                            self.keep_alive)
 
