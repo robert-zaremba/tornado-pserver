@@ -25,7 +25,7 @@ class TestPServer1(AsyncTestCase):
         self.server.listen(self.port)
 
     def check_and_stop(self):
-        assert self.io_loop.running()
+        assert self.io_loop._running
         assert self.server._started
         self.server.stop()
         self.io_loop.add_callback(self.stop)
@@ -190,7 +190,9 @@ class TestPServer2(AsyncTestCase):
             logger.info("sending: "+ d)
             sock.send(d)
             r = sock.recv(8)
-            r += sock.recv(8)        # net string are sended in two phases
+            try:
+                r += sock.recv(8)  # net string are written sended in two phases, and depends on cache can be sent in two phases as well.
+            except: pass
             logger.info("received: "+ r)
             d_in.append(r)
         self.stop()
@@ -204,6 +206,7 @@ class TestPServer2(AsyncTestCase):
 
         self.wait(timeout=1.2)
         assert d_in == d_out
+
 
 def echo_handler(request):
     request.write(request.body)

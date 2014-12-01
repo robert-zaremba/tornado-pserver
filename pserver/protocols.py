@@ -1,5 +1,5 @@
 import time
-from tornado.util import b, bytes_type
+from tornado.util import bytes_type
 
 from . import logger
 from .base import PConnection, PRequest
